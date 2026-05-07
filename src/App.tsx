@@ -61,6 +61,7 @@ function Navigation() {
     { path: '/about', label: 'about' },
     { path: '/food-photo', label: 'foodPhoto' },
     { path: '/contact', label: 'contact' },
+    { path: '/admin', label: 'admin' },
   ];
 
   const getNavBg = () => {

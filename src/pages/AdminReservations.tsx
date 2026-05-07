@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '../supabase/client';
-import { Check, X, Trash2, Calendar, Users, Clock } from 'lucide-react';
+import { Check, X, Trash2, Calendar, Users, Clock, Mail } from 'lucide-react';
 
 interface Reservation {
   id: string;
   name: string;
+  email: string | null;
   date: string;
   time: string;
   guests: number;
@@ -47,8 +48,7 @@ export default function AdminReservations() {
   if (loading) return <div className="p-8 text-white">Loading...</div>;
 
   return (
-    <div className="min-h-screen bg-black pt-20 p-8">
-      <h1 className="text-3xl font-bold text-white mb-8">Reservations</h1>
+    <div className="bg-black">
       
       <div className="grid gap-4">
         {reservations.map((r) => (
@@ -72,6 +72,14 @@ export default function AdminReservations() {
                     <Users size={14} /> {r.guests} guests
                   </span>
                 </div>
+                {r.email && (
+                  <div className="flex items-center gap-1 text-gray-400 text-sm">
+                    <Mail size={14} />
+                    <a href={`mailto:${r.email}`} className="hover:text-amber-500 transition-colors">
+                      {r.email}
+                    </a>
+                  </div>
+                )}
                 {r.message && <p className="text-gray-500 text-sm">{r.message}</p>}
               </div>
               

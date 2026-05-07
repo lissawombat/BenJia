@@ -9,6 +9,27 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      admin_users: {
+        Row: {
+          created_at: string | null
+          id: string
+          password_hash: string
+          username: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          password_hash: string
+          username: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          password_hash?: string
+          username?: string
+        }
+        Relationships: []
+      }
       menu_items: {
         Row: {
           category: string
@@ -58,6 +79,7 @@ export type Database = {
         Row: {
           created_at: string | null
           date: string
+          email: string | null
           guests: number
           id: string
           message: string | null
@@ -68,6 +90,7 @@ export type Database = {
         Insert: {
           created_at?: string | null
           date: string
+          email?: string | null
           guests: number
           id?: string
           message?: string | null
@@ -78,6 +101,7 @@ export type Database = {
         Update: {
           created_at?: string | null
           date?: string
+          email?: string | null
           guests?: number
           id?: string
           message?: string | null

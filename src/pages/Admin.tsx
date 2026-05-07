@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Utensils, FileText, Calendar, Settings, LogOut, Menu, X } from 'lucide-react';
 import AdminReservations from './AdminReservations';
+import AdminLogin from './AdminLogin';
 
 const menuItems = [
   { id: 'menu', label: '菜单管理', icon: Utensils },
@@ -13,6 +14,26 @@ const menuItems = [
 export default function Admin() {
   const [activeTab, setActiveTab] = useState('menu');
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const loggedIn = localStorage.getItem('admin_logged_in') === 'true';
+    setIsLoggedIn(loggedIn);
+  }, []);
+
+  function handleLogin() {
+    setIsLoggedIn(true);
+  }
+
+  function handleLogout() {
+    localStorage.removeItem('admin_logged_in');
+    localStorage.removeItem('admin_username');
+    setIsLoggedIn(false);
+  }
+
+  if (!isLoggedIn) {
+    return <AdminLogin onLogin={handleLogin} />;
+  }
 
   return (
     <div className="min-h-screen bg-black flex">
@@ -20,7 +41,7 @@ export default function Admin() {
       <motion.aside
         initial={{ x: -280 }}
         animate={{ x: sidebarOpen ? 0 : -280 }}
-        className="fixed left-0 top-0 h-full w-70 bg-zinc-900 border-r border-zinc-800 z-50"
+        className="fixed left-0 top-0 h-full w-[280px] bg-zinc-900 border-r border-zinc-800 z-50"
       >
         <div className="p-6 border-b border-zinc-800">
           <h1 className="text-xl font-bold text-white">BENJIA 管理后台</h1>
@@ -42,7 +63,10 @@ export default function Admin() {
           ))}
         </nav>
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-zinc-800">
-          <button className="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-white transition-colors">
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-white transition-colors"
+          >
             <LogOut size={20} />
             <span>退出登录</span>
           </button>
@@ -50,7 +74,7 @@ export default function Admin() {
       </motion.aside>
 
       {/* Main Content */}
-      <main className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'ml-70' : 'ml-0'}`}>
+      <main className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'ml-[280px]' : 'ml-0'}`}>
         {/* Header */}
         <header className="h-16 bg-zinc-900 border-b border-zinc-800 flex items-center px-6">
           <button
@@ -109,7 +133,12 @@ export default function Admin() {
             </div>
           )}
 
-          {activeTab === 'reservations' && <AdminReservations />}
+          {activeTab === 'reservations' && (
+            <div className="space-y-6">
+              <h2 className="text-2xl font-bold text-white">预订管理</h2>
+              <AdminReservations />
+            </div>
+          )}
 
           {activeTab === 'settings' && (
             <div className="space-y-6">

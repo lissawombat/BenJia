@@ -6,8 +6,14 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
+const MEOO_APP_ACCESS_URL = "https://3015-01kr1kshvrxvygx7gtzdf56txp.sandbox.meoo.host";
+
 function getSupabaseUrl(): string {
-  return `${(window as any).MEOO_CONFIG?.meoo_app_access_url || location.origin}/sb-api`;
+  const baseUrl =
+    (window as any).MEOO_CONFIG?.meoo_app_access_url ||
+    MEOO_APP_ACCESS_URL;
+
+  return `${baseUrl}/sb-api`;
 }
 
 export const supabaseUrl = getSupabaseUrl();
